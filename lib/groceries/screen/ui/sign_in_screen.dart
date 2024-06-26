@@ -19,7 +19,8 @@ class _SignInState extends State<SignInScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 60.0),
-              Image.network('https://vita-grown.com/wp-content/uploads/2020/05/fruits.png'),
+              Image.network(
+                  'https://vita-grown.com/wp-content/uploads/2020/05/fruits.png'),
               const SizedBox(height: 40.0),
               const Text(
                 'Get your groceries with Apna Grocery',
@@ -32,7 +33,11 @@ class _SignInState extends State<SignInScreen> {
               const SizedBox(height: 20.0),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) =>NumberScreen(),));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NumberScreen(),
+                      ));
                 },
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -53,9 +58,7 @@ class _SignInState extends State<SignInScreen> {
               ),
               const SizedBox(height: 20.0),
               ElevatedButton.icon(
-                onPressed: () {
-
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   minimumSize: const Size(double.infinity, 50.0),
@@ -71,9 +74,7 @@ class _SignInState extends State<SignInScreen> {
               ),
               const SizedBox(height: 16.0),
               ElevatedButton.icon(
-                onPressed: () {
-
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue.shade800,
                   minimumSize: const Size(double.infinity, 50.0),

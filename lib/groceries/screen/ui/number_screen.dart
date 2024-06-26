@@ -17,24 +17,28 @@ class _NumberScreenState extends State<NumberScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-        ),
+        appBar: AppBar(),
         body: Form(
           key: _formKey,
           child: Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
             child: Column(
               children: [
-                const SizedBox(height: 32,),
+                const SizedBox(
+                  height: 32,
+                ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Enter your mobile number', style: TextStyle(
-                        fontSize: 24
-                    ),),
+                    Text(
+                      'Enter your mobile number',
+                      style: TextStyle(fontSize: 24),
+                    ),
                   ],
                 ),
-                const SizedBox(height: 32,),
+                const SizedBox(
+                  height: 32,
+                ),
                 TextFormField(
                   controller: _numberController,
                   keyboardType: TextInputType.phone,
@@ -43,11 +47,11 @@ class _NumberScreenState extends State<NumberScreen> {
                     prefixText: '+91',
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(16.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(16.0),
                       ),
                     ),
                   ),
-
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your phone number';
@@ -55,7 +59,7 @@ class _NumberScreenState extends State<NumberScreen> {
                     if (value.length > 10) {
                       return 'Phone number cannot exceed 10 digits';
                     }
-                    if(value.length<10){
+                    if (value.length < 10) {
                       return 'Please enter 10 digits';
                     }
                     return null;
@@ -66,7 +70,6 @@ class _NumberScreenState extends State<NumberScreen> {
                     });
                   },
                 ),
-
                 const Divider(height: 1, thickness: 1.0),
               ],
             ),
@@ -75,11 +78,16 @@ class _NumberScreenState extends State<NumberScreen> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.green,
           shape: const CircleBorder(),
-          onPressed: _navigate ? () {
-            Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const VerificationScreen(),),);
-          }
-          :null,
+          onPressed: _navigate
+              ? () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const VerificationScreen(),
+                    ),
+                  );
+                }
+              : null,
           child: const Icon(Icons.chevron_right),
         ),
       ),

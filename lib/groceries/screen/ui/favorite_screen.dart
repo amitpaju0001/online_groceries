@@ -54,12 +54,15 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         itemBuilder: (context, index) {
           final item = favouriteItems[index];
           return ListTile(
-            leading: Image.network(item.imageUrl,width: 40,height: 40,),
+            leading: Image.network(
+              item.imageUrl,
+              width: 40,
+              height: 40,
+            ),
             title: Text(item.name),
             subtitle: Text('${item.size}, Price'),
             trailing: Text(item.price),
-            onTap: () {
-            },
+            onTap: () {},
           );
         },
         separatorBuilder: (context, index) {
@@ -69,8 +72,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
-          onPressed: () {
-          },
+          onPressed: () {},
           child: const Text('Add All To Cart'),
         ),
       ),

@@ -96,17 +96,19 @@ class _AccountScreenState extends State<AccountScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-               children: [
+                children: [
                   ElevatedButton(
-                    onPressed: () {},
-                    child:const Row(
-                        children: [
-                      Icon(Icons.logout),
-                      SizedBox(width: 180,),
-                      Text('Log Out',selectionColor: Colors.green,),
-                    ]
-                    )
-                  ),
+                      onPressed: () {},
+                      child: const Row(children: [
+                        Icon(Icons.logout),
+                        SizedBox(
+                          width: 180,
+                        ),
+                        Text(
+                          'Log Out',
+                          selectionColor: Colors.green,
+                        ),
+                      ])),
                 ],
               ),
             ),

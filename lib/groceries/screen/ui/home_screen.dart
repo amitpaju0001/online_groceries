@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 contentPadding: EdgeInsets.only(left: 86),
                 leading: Icon(Icons.location_on),
                 title: Text(
-                    StringConst.homeScreenApp,
+                  StringConst.homeScreenApp,
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.grey),
                 ),
@@ -123,7 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const ListTile(
                             title: Text(StringConst.homeScreenApple),
-                            subtitle: Text(StringConst.homeScreenApplePrice,
+                            subtitle: Text(
+                              StringConst.homeScreenApplePrice,
                             ),
                           ),
                           const ListTile(
@@ -191,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         children: [
                           Image.network(
-                           NetworkImageModel.imageRedChili,
+                            NetworkImageModel.imageRedChili,
                             width: 72,
                             height: 80,
                           ),
@@ -297,9 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.orange.shade50),
                       child: Row(
                         children: [
-                          Image.network(
-                            NetworkImageModel.imagePulses
-                          ),
+                          Image.network(NetworkImageModel.imagePulses),
                           const Text(StringConst.homeScreenPulses),
                         ],
                       ),
@@ -315,9 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.green.shade50),
                       child: Row(
                         children: [
-                          Image.network(
-                            NetworkImageModel.imageRice
-                              ),
+                          Image.network(NetworkImageModel.imageRice),
                           const Text(StringConst.homeScreenRice),
                         ],
                       ),

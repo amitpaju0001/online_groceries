@@ -12,13 +12,30 @@ class MyCartScreen extends StatefulWidget {
 
 class _MyCartScreenState extends State<MyCartScreen> {
   final List<CartItems> items = [
-    CartItems(image: NetworkImageModel.imageCartBellPepper, name: 'Bell Pepper Red', quantity: '1kg', price: 4.99),
-    CartItems(image: NetworkImageModel.imageCartEgg, name: 'Egg Chicken Red', quantity: '4pcs', price: 1.99),
-    CartItems(image: NetworkImageModel.imageBanana, name: 'Organic Bananas', quantity: '1.2kg', price: 3.00),
-    CartItems(image: NetworkImageModel.imageGinger, name: 'Ginger', quantity: '250gm', price: 2.99),
+    CartItems(
+        image: NetworkImageModel.imageCartBellPepper,
+        name: 'Bell Pepper Red',
+        quantity: '1kg',
+        price: 4.99),
+    CartItems(
+        image: NetworkImageModel.imageCartEgg,
+        name: 'Egg Chicken Red',
+        quantity: '4pcs',
+        price: 1.99),
+    CartItems(
+        image: NetworkImageModel.imageBanana,
+        name: 'Organic Bananas',
+        quantity: '1.2kg',
+        price: 3.00),
+    CartItems(
+        image: NetworkImageModel.imageGinger,
+        name: 'Ginger',
+        quantity: '250gm',
+        price: 2.99),
   ];
 
-  double get totalPrice => items.fold(0.0, (sum, item) => sum + (item.price * item.count));
+  double get totalPrice =>
+      items.fold(0.0, (sum, item) => sum + (item.price * item.count));
 
   void incrementQuantity(int index) {
     setState(() {
@@ -69,7 +86,8 @@ class _MyCartScreenState extends State<MyCartScreen> {
                       Text(item.quantity),
                     ],
                   ),
-                  trailing: Text('\$${(item.price * item.count).toStringAsFixed(2)}'),
+                  trailing:
+                      Text('\$${(item.price * item.count).toStringAsFixed(2)}'),
                 );
               },
             ),
@@ -80,10 +98,11 @@ class _MyCartScreenState extends State<MyCartScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                  },
-                  child: Text(StringConst.cartScreenCheckOut, semanticsLabel: ('\$${totalPrice.toStringAsFixed(2)}'),
-                ),
+                  onPressed: () {},
+                  child: Text(
+                    StringConst.cartScreenCheckOut,
+                    semanticsLabel: ('\$${totalPrice.toStringAsFixed(2)}'),
+                  ),
                 ),
               ],
             ),

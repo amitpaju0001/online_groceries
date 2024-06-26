@@ -1,4 +1,3 @@
-
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +18,7 @@ class StartingHomeScreen extends StatefulWidget {
 
 class _StartingHomeScreenState extends State<StartingHomeScreen> {
   List<Widget> screens = [
-   const HomeScreen(),
+    const HomeScreen(),
     const ExploreScreen(),
     const MyCartScreen(),
     const FavouriteScreen(),
