@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_groceries/groceries/screen/ui/log_in_screen.dart';
+import 'package:online_groceries/auth/ui/log_in_screen.dart';
 
 class SelectLocationScreen extends StatefulWidget {
   const SelectLocationScreen({super.key});
