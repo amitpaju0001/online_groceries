@@ -79,6 +79,26 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+  Future resetPassword(String email) async {
+    try {
+      isError = false;
+      notifyListeners();
+      isLoading = true;
+      notifyListeners();
+      AuthService authService = Get.find();
+      await authService.resetPassword(email);
+      isLoading = false;
+      notifyListeners();
+      Fluttertoast.showToast(msg: 'Password reset link sent.');
+    } on FirebaseAuthException catch (e) {
+      isError = true;
+      isLoading = false;
+      notifyListeners();
+      Fluttertoast.showToast(msg: 'Auth Error ${e.code}');
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
   Future loadLoginStatus()async{
     StorageHelper storageHelper = Get.find();
     isLoggedIn = await storageHelper.getLoginStatus();

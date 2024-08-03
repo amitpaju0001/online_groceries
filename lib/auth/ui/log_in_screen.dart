@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_groceries/auth/model/user_model.dart';
 import 'package:online_groceries/auth/provider/auth_provider.dart';
+import 'package:online_groceries/auth/ui/forgot_password_screen.dart';
 import 'package:online_groceries/auth/ui/register_screen.dart';
 import 'package:online_groceries/groceries/screen/ui/starting_home_screen.dart';
 import 'package:online_groceries/groceries/shared/model/network_image_model.dart';
@@ -145,6 +146,15 @@ class _LogInScreenState extends State<LogInScreen> {
                           child: Text('Login')),
                     ),
                     const SizedBox(height: 20),
+                    Center(
+                      child: TextButton(onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return ForgotPasswordScreen();
+                        },));
+                      }, child: Text(
+                          'Forgot Password ?'
+                      )),
+                    ),
                     Center(
                       child: TextButton(
                         onPressed: () {
