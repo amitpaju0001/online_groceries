@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_groceries/auth/provider/auth_provider.dart';
+import 'package:online_groceries/auth/provider/custom_auth_provider.dart';
 import 'package:online_groceries/auth/ui/log_in_screen.dart';
 import 'package:online_groceries/groceries/shared/model/account_model.dart';
 import 'package:provider/provider.dart';
@@ -102,7 +102,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: [
                   ElevatedButton(
                       onPressed: () {
-                        final provider =   Provider.of<AuthProvider>(context,listen: false);
+                        final provider =   Provider.of<CustomAuthProvider>(context,listen: false);
                         provider.logout();
                         if(!provider.isError){
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LogInScreen(),));

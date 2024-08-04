@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:online_groceries/auth/model/user_model.dart';
 import 'package:online_groceries/auth/ui/log_in_screen.dart';
+import 'package:online_groceries/auth/ui/otp_screen.dart';
 import 'package:provider/provider.dart';
-import '../provider/auth_provider.dart';
+import '../provider/custom_auth_provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -17,6 +17,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
   bool navigate = false;
@@ -27,7 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       appBar: AppBar(
         title: const Text('Register'),
       ),
-      body: Consumer<AuthProvider>(
+      body: Consumer<CustomAuthProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading) {
             return const Center(
@@ -59,8 +60,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 16),
+                      padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
+                      child: TextFormField(
+                        controller: phoneController,
+                        decoration: const InputDecoration(
+                          labelText: 'Phone',
+                          hintText: 'Enter your Number',
+                        ),
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Number';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
                       child: TextFormField(
                         controller: emailController,
                         decoration: const InputDecoration(
@@ -73,17 +91,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                           return null;
                         },
-                        onChanged: (value) {
-                          setState(() {
-                            navigate =
-                                formKey.currentState?.validate() ?? false;
-                          });
-                        },
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 16),
+                      padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
                       child: TextFormField(
                         controller: passwordController,
                         obscureText: !isPasswordVisible,
@@ -107,17 +118,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                           return null;
                         },
-                        onChanged: (value) {
-                          setState(() {
-                            navigate =
-                                formKey.currentState?.validate() ?? false;
-                          });
-                        },
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 16),
+                      padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
                       child: TextFormField(
                         controller: confirmPasswordController,
                         obscureText: !isConfirmPasswordVisible,
@@ -144,33 +148,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                           return null;
                         },
-                        onChanged: (value) {
-                          setState(() {
-                            navigate =
-                                formKey.currentState?.validate() ?? false;
-                          });
-                        },
                       ),
                     ),
                     const SizedBox(height: 20),
                     Center(
                       child: ElevatedButton(
-                          onPressed: () async {
-                            if (formKey.currentState?.validate() ?? false) {
-                              UserModel userModel = UserModel(
-                                  email: emailController.text.trim(),
-                                  password: passwordController.text.trim());
-                              AuthProvider provider = Provider.of<AuthProvider>(context, listen: false);
-                              await provider.createAccount(userModel);
-                              if (!provider.isError) {
-                                Navigator.pop(context);
-                              }
-                            } else {
+                        onPressed: () async {
+                          if (formKey.currentState?.validate() ?? false) {
+                            if (passwordController.text != confirmPasswordController.text) {
                               Fluttertoast.showToast(
-                                  msg: 'Please fill all fields ');
+                                  msg: 'Password does not match with confirm password');
+                              return;
                             }
-                          },
-                          child: const Text('Register')),
+
+                            try {
+                              await provider.verifyPhoneNumber(phoneController.text.toString());
+                              if (provider.verificationId != null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => OtpScreen(
+                                      verificationId: provider.verificationId!,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                Fluttertoast.showToast(msg: 'Failed to send OTP');
+                              }
+                            } catch (e) {
+                              Fluttertoast.showToast(msg: e.toString());
+                            }
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: 'Please fill all fields');
+                          }
+                        },
+                        child: const Text('Register'),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Center(

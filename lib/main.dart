@@ -2,7 +2,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:online_groceries/auth/provider/auth_provider.dart';
+import 'package:online_groceries/auth/provider/custom_auth_provider.dart';
 import 'package:online_groceries/auth/service/auth_service.dart';
 import 'package:online_groceries/auth/ui/log_in_screen.dart';
 import 'package:online_groceries/core/storage_helper.dart';
@@ -23,13 +23,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(AuthService());
     Get.put(StorageHelper());
-    AuthProvider authProvider = AuthProvider();
+    CustomAuthProvider authProvider = CustomAuthProvider();
     authProvider.loadLoginStatus();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => authProvider,)
       ],
-      child: Consumer<AuthProvider>(builder:(context, provider, child) {
+      child: Consumer<CustomAuthProvider>(builder:(context, provider, child) {
         return MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(

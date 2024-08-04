@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:online_groceries/auth/model/user_model.dart';
-import 'package:online_groceries/auth/provider/auth_provider.dart';
+import 'package:online_groceries/auth/provider/custom_auth_provider.dart';
 import 'package:online_groceries/auth/ui/forgot_password_screen.dart';
 import 'package:online_groceries/auth/ui/register_screen.dart';
 import 'package:online_groceries/groceries/screen/ui/starting_home_screen.dart';
 import 'package:online_groceries/groceries/shared/model/network_image_model.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -24,10 +26,10 @@ class _LogInScreenState extends State<LogInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<AuthProvider>(
+      body: Consumer<CustomAuthProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -54,7 +56,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Loging',
+                            'Log in',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
@@ -67,14 +69,12 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 16),
+                      padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
                       child: TextFormField(
                         controller: emailController,
                         decoration: const InputDecoration(
                           labelText: 'Email',
                           hintText: 'Enter your Email',
-
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -84,15 +84,13 @@ class _LogInScreenState extends State<LogInScreen> {
                         },
                         onChanged: (value) {
                           setState(() {
-                            navigate =
-                                formKey.currentState?.validate() ?? false;
+                            navigate = formKey.currentState?.validate() ?? false;
                           });
                         },
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 16),
+                      padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
                       child: TextFormField(
                         controller: passwordController,
                         obscureText: !isPassword,
@@ -118,47 +116,100 @@ class _LogInScreenState extends State<LogInScreen> {
                         },
                         onChanged: (value) {
                           setState(() {
-                            navigate =
-                                formKey.currentState?.validate() ?? false;
+                            navigate = formKey.currentState?.validate() ?? false;
                           });
                         },
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Align(
+                    Align(
                       alignment: Alignment.centerRight,
-                      child: Text('Forgot password?'),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const ForgotPasswordScreen();
+                              },
+                            ),
+                          );
+                        },
+                        child: const Text('Forgot password?'),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Center(
                       child: ElevatedButton(
-                          onPressed: ()async {
+                        onPressed: () async {
+                          if (formKey.currentState?.validate() ?? false) {
                             UserModel userModel = UserModel(
-                                email: emailController.text.trim(),
-                                password: passwordController.text.trim());
-                            AuthProvider provider =  Provider.of<AuthProvider>(context, listen: false);
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                            );
+                            CustomAuthProvider provider =
+                            Provider.of<CustomAuthProvider>(context, listen: false);
                             await provider.login(userModel);
-                            if(!provider.isError) {
-                              Navigator.push(context, MaterialPageRoute(builder: (
-                                  context) => StartingHomeScreen(),));
+                            if (!provider.isError) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const StartingHomeScreen(),
+                                ),
+                              );
                             }
-                          },
-                          child: Text('Login')),
+                          } else {
+                           Fluttertoast.showToast(msg: 'login failed');
+                          }
+                        },
+                        child: const Text('Login'),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Center(
-                      child: TextButton(onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return ForgotPasswordScreen();
-                        },));
-                      }, child: Text(
-                          'Forgot Password ?'
-                      )),
+                      child: GestureDetector(
+                        onTap: () async {
+                          CustomAuthProvider provider =
+                          Provider.of<CustomAuthProvider>(context, listen: false);
+                          await provider.googleLogin();
+                          if (!provider.isError) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const StartingHomeScreen(),
+                              ),
+                            );
+                          }
+                        },
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(FontAwesomeIcons.google, size: 20),
+                            SizedBox(width: 5),
+                            Text(
+                              'Google Login',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
+                    const SizedBox(height: 20),
                     Center(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen(),));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const RegisterScreen();
+                              },
+                            ),
+                          );
                         },
                         child: const Text(
                           'Don’t have an account? Signup',

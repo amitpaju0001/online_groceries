@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_groceries/auth/provider/auth_provider.dart';
+import 'package:online_groceries/auth/provider/custom_auth_provider.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 hintText: 'Enter your Email',
               ),
             ),
-            Consumer<AuthProvider>(
+            Consumer<CustomAuthProvider>(
               builder: (context, provider, child) {
                 return ElevatedButton(
                   onPressed: () {
