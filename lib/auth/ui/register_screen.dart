@@ -20,7 +20,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController phoneController = TextEditingController();
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
-  bool navigate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +47,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Text(
                         'Register',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 24),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 100),
                     const Padding(
                       padding: EdgeInsets.only(bottom: 8.0),
                       child: Text(
-                        'Enter your email and password',
+                        'Enter your phone number, email, and password',
                         style: TextStyle(color: Colors.grey),
                       ),
                     ),
@@ -65,29 +66,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: phoneController,
                         decoration: const InputDecoration(
                           labelText: 'Phone',
-                          hintText: 'Enter your Number',
+                          hintText: 'Enter your number',
                         ),
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Number';
+                            return 'Please enter your phone number';
                           }
                           return null;
                         },
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
                       child: TextFormField(
                         controller: emailController,
                         decoration: const InputDecoration(
                           labelText: 'Email',
-                          hintText: 'Enter your Email',
+                          hintText: 'Enter your email',
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Email';
+                            return 'Please enter your email';
                           }
                           return null;
                         },
@@ -99,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: passwordController,
                         obscureText: !isPasswordVisible,
                         decoration: InputDecoration(
-                          hintText: 'Enter Your password',
+                          hintText: 'Enter your password',
                           labelText: 'Password',
                           suffixIcon: IconButton(
                             icon: Icon(isPasswordVisible
@@ -114,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter password';
+                            return 'Please enter your password';
                           }
                           return null;
                         },
@@ -126,7 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: confirmPasswordController,
                         obscureText: !isConfirmPasswordVisible,
                         decoration: InputDecoration(
-                          hintText: 'Confirm Your password',
+                          hintText: 'Confirm your password',
                           labelText: 'Confirm Password',
                           suffixIcon: IconButton(
                             icon: Icon(isConfirmPasswordVisible
@@ -141,10 +141,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter confirm password';
+                            return 'Please confirm your password';
                           }
                           if (passwordController.text != value) {
-                            return 'Password does not match';
+                            return 'Passwords do not match';
                           }
                           return null;
                         },
@@ -155,14 +155,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (formKey.currentState?.validate() ?? false) {
-                            if (passwordController.text != confirmPasswordController.text) {
-                              Fluttertoast.showToast(
-                                  msg: 'Password does not match with confirm password');
-                              return;
-                            }
-
                             try {
-                              await provider.verifyPhoneNumber(phoneController.text.toString());
+                              await provider.verifyPhoneNumber(phoneController.text);
                               if (provider.verificationId != null) {
                                 Navigator.push(
                                   context,
@@ -179,8 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               Fluttertoast.showToast(msg: e.toString());
                             }
                           } else {
-                            Fluttertoast.showToast(
-                                msg: 'Please fill all fields');
+                            Fluttertoast.showToast(msg: 'Please fill all fields');
                           }
                         },
                         child: const Text('Register'),

@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries/auth/model/user_model.dart';
 import 'package:online_groceries/auth/service/auth_service.dart';
@@ -16,8 +16,6 @@ class CustomAuthProvider extends ChangeNotifier {
 
   Future<void> createAccount(UserModel userModel) async {
     try {
-      isError = false;
-      notifyListeners();
       isLoading = true;
       notifyListeners();
 
@@ -38,6 +36,9 @@ class CustomAuthProvider extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Auth Error ${e.code}');
       }
     } catch (e) {
+      isError = true;
+      isLoading = false;
+      notifyListeners();
       Fluttertoast.showToast(msg: e.toString());
     }
   }
@@ -45,7 +46,6 @@ class CustomAuthProvider extends ChangeNotifier {
   Future<void> login(UserModel userModel) async {
     try {
       isError = false;
-      notifyListeners();
       isLoading = true;
       notifyListeners();
 
@@ -74,7 +74,7 @@ class CustomAuthProvider extends ChangeNotifier {
   Future<void> logout() async {
     try {
       isError = false;
-      isLoading = false;
+      isLoading = true;
       notifyListeners();
 
       AuthService authService = Get.find();
@@ -82,32 +82,13 @@ class CustomAuthProvider extends ChangeNotifier {
 
       StorageHelper storageHelper = Get.find();
       storageHelper.removeLoginStatus();
+
+      isLoading = false;
+      notifyListeners();
     } catch (e) {
       isError = true;
       isLoading = false;
       notifyListeners();
-    }
-  }
-
-  Future<void> resetPassword(String email) async {
-    try {
-      isError = false;
-      notifyListeners();
-      isLoading = true;
-      notifyListeners();
-
-      AuthService authService = Get.find();
-      await authService.resetPassword(email);
-
-      isLoading = false;
-      notifyListeners();
-      Fluttertoast.showToast(msg: 'Password reset link sent.');
-    } on FirebaseAuthException catch (e) {
-      isError = true;
-      isLoading = false;
-      notifyListeners();
-      Fluttertoast.showToast(msg: 'Auth Error ${e.code}');
-    } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
   }
@@ -115,7 +96,6 @@ class CustomAuthProvider extends ChangeNotifier {
   Future<void> googleLogin() async {
     try {
       isError = false;
-      notifyListeners();
       isLoading = true;
       notifyListeners();
 
@@ -133,6 +113,31 @@ class CustomAuthProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
       Fluttertoast.showToast(msg: 'Google sign-in failed: $e');
+    }
+  }
+
+  Future<void> resetPassword(String email) async {
+    try {
+      isError = false;
+      isLoading = true;
+      notifyListeners();
+
+      AuthService authService = Get.find();
+      await authService.resetPassword(email);
+
+      isLoading = false;
+      notifyListeners();
+      Fluttertoast.showToast(msg: 'Password reset link sent.');
+    } on FirebaseAuthException catch (e) {
+      isError = true;
+      isLoading = false;
+      notifyListeners();
+      Fluttertoast.showToast(msg: 'Auth Error ${e.code}');
+    } catch (e) {
+      isError = true;
+      isLoading = false;
+      notifyListeners();
+      Fluttertoast.showToast(msg: e.toString());
     }
   }
 
